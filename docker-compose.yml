@@ -1,0 +1,23 @@
+version: "3"
+
+services: 
+    api:
+        image: node:12-slim
+        working_dir: /opt/app
+        command: yarn watch
+        depends_on: 
+            - api-db
+        environment: 
+            - DB_URI=mysql://root:password@api-db/db?charset=UTF8
+        ports: 
+            - "7101:7101"
+        volumes: 
+            - ./api:/opt/app
+
+    api-db:
+        environment: 
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=db
+        image: mysql:5.7.20
+        ports:
+            - "7201:3306"
